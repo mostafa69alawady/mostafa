@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>غربالگری شناختی تخصصی — سلامت مغز</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+  :root {
+    --bg:#F0F4F8;--surface:#fff;--primary:#1B4F72;--accent:#2E86AB;
+    --accent-light:#A8D8EA;--warn:#E67E22;--danger:#C0392B;
+    --success:#1E8449;--text:#1A1A2E;--muted:#6B7A8D;--border:#D5E0EC;--radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:24px 16px 60px;}
+  .header{text-align:center;margin-bottom:28px;}
+  .logo-mark{width:64px;height:64px;background:var(--primary);border-radius:18px;display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:14px;box-shadow:0 8px 24px rgba(27,79,114,.25);}
+  .header h1{font-size:22px;font-weight:700;color:var(--primary);margin-bottom:6px;}
+  .header p{font-size:13px;color:var(--muted);line-height:1.7;}
+  .progress-wrap{max-width:660px;margin:0 auto 24px;}
+  .progress-info{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:7px;}
+  .progress-bar-bg{height:6px;background:var(--border);border-radius:99px;overflow:hidden;}
+  .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--primary));border-radius:99px;transition:width .4s ease;width:0%;}
+  .card{background:var(--surface);border-radius:var(--radius);box-shadow:0 2px 16px rgba(27,79,114,.08);max-width:660px;margin:0 auto 20px;overflow:hidden;}
+  .section-tag{background:var(--primary);color:#fff;font-size:12px;font-weight:600;padding:8px 20px;}
+  .question-block{padding:22px 22px 16px;border-bottom:1px solid var(--border);}
+  .q-number{font-size:11px;color:var(--accent);font-weight:700;margin-bottom:6px;text-transform:uppercase;}
+  .q-text{font-size:15px;font-weight:600;line-height:1.7;margin-bottom:5px;}
+  .q-hint{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6;background:#EBF6FF;border-right:3px solid var(--accent);padding:8px 12px;border-radius:6px;}
+  .options{display:flex;flex-direction:column;gap:9px;}
+  .option{display:flex;align-items:center;gap:12px;padding:12px 16px;border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;font-size:14px;background:#fff;}
+  .option:hover{border-color:var(--accent-light);background:#F5FBFF;}
+  .option.selected{border-color:var(--accent);background:#EBF6FF;font-weight:600;}
+  .option-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+  .option.selected .option-dot{background:var(--accent);border-color:var(--accent);}
+  .option.selected .option-dot::after{content:'';width:7px;height:7px;background:#fff;border-radius:50%;}
+  .scale-wrap{margin-top:4px;}
+  .scale-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:9px;}
+  .scale-btns{display:flex;gap:7px;}
+  .scale-btn{flex:1;height:42px;border:2px solid var(--border);border-radius:8px;background:#fff;font-family:'Vazirmatn',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--text);}
+  .scale-btn:hover{border-color:var(--accent-light);background:#F5FBFF;}
+  .scale-btn.selected{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .nav{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;}
+  .btn{padding:11px 26px;border-radius:10px;font-family:'Vazirmatn',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;}
+  .btn-primary{background:var(--primary);color:#fff;}
+  .btn-primary:hover{background:#154360;transform:translateY(-1px);}
+  .btn-secondary{background:transparent;color:var(--muted);border:2px solid var(--border);}
+  .btn-secondary:hover{color:var(--text);border-color:var(--muted);}
+  .btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+  /* Welcome */
+  #welcome-screen{max-width:660px;margin:0 auto;}
+  .welcome-card{background:var(--surface);border-radius:var(--radius);box-shadow:0 2px 16px rgba(27,79,114,.08);padding:28px 24px;text-align:center;}
+  .welcome-card h2{font-size:18px;font-weight:700;color:var(--primary);margin-bottom:10px;}
+  .welcome-card p{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:18px;}
+  .features{display:flex;gap:12px;margin-bottom:22px;flex-wrap:wrap;}
+  .feature{flex:1;min-width:120px;background:var(--bg);border-radius:10px;padding:14px 10px;text-align:center;}
+  .feature .fi{font-size:22px;margin-bottom:7px;}
+  .feature p{font-size:11px;color:var(--muted);line-height:1.5;}
+  .cta-btn{display:block;width:100%;padding:15px;background:var(--primary);color:#fff;text-align:center;border:none;font-family:'Vazirmatn',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border-radius:10px;margin-top:18px;transition:background .2s;}
+  .cta-btn:hover{background:#154360;}
+  /* Info form */
+  .info-form{text-align:right;margin-bottom:20px;}
+  .form-row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+  .form-group{flex:1;min-width:140px;}
+  .form-group label{display:block;font-size:12px;font-weight:600;color:var(--primary);margin-bottom:5px;}
+  .form-group input,.form-group select{width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:8px;font-family:'Vazirmatn',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border .2s;}
+  .form-group input:focus,.form-group select:focus{border-color:var(--accent);}
+  /* Result */
+  #result-screen{display:none;}
+  .result-card{background:var(--surface);border-radius:var(--radius);box-shadow:0 2px 16px rgba(27,79,114,.08);max-width:660px;margin:0 auto;overflow:hidden;}
+  .result-header{padding:28px 24px 20px;text-align:center;}
+  .score-circle{width:100px;height:100px;border-radius:50%;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;font-size:28px;font-weight:700;margin-bottom:14px;border:6px solid;}
+  .score-circle .score-label{font-size:11px;font-weight:400;}
+  .level-low{border-color:var(--success);color:var(--success);background:#EAFAF1;}
+  .level-medium{border-color:var(--warn);color:var(--warn);background:#FEF9E7;}
+  .level-high{border-color:var(--danger);color:var(--danger);background:#FDEDEC;}
+  .result-title{font-size:18px;font-weight:700;margin-bottom:7px;}
+  .result-desc{font-size:13px;color:var(--muted);line-height:1.8;}
+  .result-sections{padding:0 24px 24px;}
+  .result-section{margin-bottom:18px;}
+  .result-section h3{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:9px;padding-bottom:6px;border-bottom:2px solid var(--border);}
+  .domain-bar{margin-bottom:10px;}
+  .domain-name{font-size:12px;margin-bottom:4px;display:flex;justify-content:space-between;}
+  .domain-track{height:7px;background:var(--border);border-radius:99px;overflow:hidden;}
+  .domain-fill{height:100%;border-radius:99px;transition:width .6s ease;}
+  .fill-good{background:var(--success);}
+  .fill-warn{background:var(--warn);}
+  .fill-danger{background:var(--danger);}
+  .recs{list-style:none;}
+  .recs li{padding:9px 12px;border-radius:8px;background:var(--bg);margin-bottom:7px;font-size:12px;line-height:1.6;display:flex;gap:9px;}
+  .recs li::before{content:attr(data-icon);flex-shrink:0;}
+  .disclaimer{background:#FEF9E7;border:1px solid #F9E79F;border-radius:10px;padding:12px 14px;font-size:11px;color:#7D6608;line-height:1.7;margin-top:16px;}
+  /* Export */
+  .export-box{background:#EBF5FB;border-radius:10px;padding:16px;margin-top:16px;}
+  .export-box h4{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;}
+  .export-btns{display:flex;gap:9px;flex-wrap:wrap;}
+  .export-btn{padding:9px 16px;border-radius:8px;font-family:'Vazirmatn',sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:2px solid var(--primary);background:#fff;color:var(--primary);transition:all .2s;}
+  .export-btn:hover{background:var(--primary);color:#fff;}
+  /* Summary table */
+  .summary-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;}
+  .summary-table th{background:var(--primary);color:#fff;padding:8px 10px;text-align:right;}
+  .summary-table td{padding:7px 10px;border-bottom:1px solid var(--border);}
+  .summary-table tr:nth-child(even) td{background:#F8FBFD;}
+  .badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;}
+  .badge-low{background:#EAFAF1;color:var(--success);}
+  .badge-med{background:#FEF9E7;color:var(--warn);}
+  .badge-high{background:#FDEDEC;color:var(--danger);}
+  @media(max-width:480px){.scale-btns{gap:4px;}.scale-btn{font-size:12px;}.btn{padding:10px 16px;font-size:12px;}}
+</style>
+</head>
+<body>
+
+<!-- Welcome -->
+<div id="welcome-screen">
+  <div class="header">
+    <div class="logo-mark">🧠</div>
+    <h1>غربالگری شناختی تخصصی</h1>
+    <p>ارزیابی جامع حافظه، توجه، زبان، استرس و سبک زندگی</p>
+  </div>
+  <div class="welcome-card">
+    <h2>پیش از شروع بخوانید</h2>
+    <p>این پرسشنامه بر اساس استانداردهای بالینی معتبر (MoCA، MMSE، PSS) طراحی شده و صرفاً یک ابزار <strong>غربالگری اولیه</strong> است. جایگزین تشخیص متخصص نمی‌شود.</p>
+    <div class="features">
+      <div class="feature"><div class="fi">⏱️</div><p>۱۵ تا ۲۰ دقیقه</p></div>
+      <div class="feature"><div class="fi">📋</div><p>۴۰ سوال در ۷ بخش</p></div>
+      <div class="feature"><div class="fi">🔒</div><p>کاملاً محرمانه</p></div>
+      <div class="feature"><div class="fi">📊</div><p>گزارش فوری</p></div>
+    </div>
+    <!-- Patient info form -->
+    <div class="info-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>نام و نام خانوادگی</label>
+          <input type="text" id="pt-name" placeholder="اختیاری">
+        </div>
+        <div class="form-group">
+          <label>سن</label>
+          <input type="number" id="pt-age" placeholder="مثلاً ۵۵" min="18" max="100">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>جنسیت</label>
+          <select id="pt-gender">
+            <option value="">انتخاب کنید</option>
+            <option value="زن">زن</option>
+            <option value="مرد">مرد</option>
+            <option value="ترجیح می‌دهم نگویم">ترجیح می‌دهم نگویم</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>تحصیلات</label>
+          <select id="pt-edu">
+            <option value="">انتخاب کنید</option>
+            <option value="زیر دیپلم">زیر دیپلم</option>
+            <option value="دیپلم">دیپلم</option>
+            <option value="کارشناسی">کارشناسی</option>
+            <option value="کارشناسی ارشد یا بالاتر">کارشناسی ارشد یا بالاتر</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <button class="cta-btn" onclick="startQuiz()">شروع ارزیابی</button>
+  </div>
+</div>
+
+<!-- Quiz -->
+<div id="quiz-screen" style="display:none">
+  <div class="header">
+    <div class="logo-mark">🧠</div>
+    <h1>غربالگری شناختی تخصصی</h1>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-info">
+      <span id="section-label">بخش ۱</span>
+      <span id="q-counter">سوال ۱ از ۴۰</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
+  </div>
+  <div class="card" id="question-card">
+    <div id="section-tag-display" class="section-tag"></div>
+    <div id="questions-container"></div>
+    <div class="nav">
+      <button class="btn btn-secondary" id="btn-prev" onclick="prevQ()" disabled>قبلی</button>
+      <button class="btn btn-primary" id="btn-next" onclick="nextQ()">بعدی</button>
+    </div>
+  </div>
+</div>
+
+<!-- Result -->
+<div id="result-screen">
+  <div class="header">
+    <div class="logo-mark">📊</div>
+    <h1>گزارش غربالگری شناختی</h1>
+    <p id="result-patient-info"></p>
+  </div>
+  <div class="result-card">
+    <div class="result-header">
+      <div class="score-circle" id="score-circle">
+        <span id="score-num">--</span>
+        <span class="score-label">از ۱۰۰</span>
+      </div>
+      <div class="result-title" id="result-title"></div>
+      <div class="result-desc" id="result-desc"></div>
+    </div>
+    <div class="result-sections">
+      <div class="result-section">
+        <h3>🔍 عملکرد در هر حوزه شناختی</h3>
+        <div id="domain-bars"></div>
+      </div>
+      <div class="result-section">
+        <h3>📋 جزئیات پاسخ‌ها (برای روانشناس)</h3>
+        <div id="answers-summary"></div>
+      </div>
+      <div class="result-section">
+        <h3>💡 توصیه‌های بالینی اولیه</h3>
+        <ul class="recs" id="recs-list"></ul>
+      </div>
+      <div class="export-box">
+        <h4>📤 ذخیره و اشتراک‌گذاری گزارش</h4>
+        <div class="export-btns">
+          <button class="export-btn" onclick="printReport()">🖨️ چاپ گزارش</button>
+          <button class="export-btn" onclick="copyReport()">📋 کپی متن گزارش</button>
+          <button class="export-btn" onclick="downloadCSV()">⬇️ دانلود Excel</button>
+        </div>
+      </div>
+      <div class="disclaimer">⚠️ <strong>توجه:</strong> این نتیجه صرفاً غربالگری اولیه است و تشخیص پزشکی محسوب نمی‌شود. برای ارزیابی دقیق‌تر، مراجعه به روانشناس یا متخصص مغز و اعصاب ضروری است.</div>
+      <button class="cta-btn" onclick="bookConsult()">رزرو مشاوره با متخصص</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const sections = [
+  {id:1,label:"عوامل خطر و سابقه پزشکی"},
+  {id:2,label:"ارزیابی حافظه اپیزودیک"},
+  {id:3,label:"حافظه کاری و زبان"},
+  {id:4,label:"توجه، تمرکز و عملکرد اجرایی"},
+  {id:5,label:"استرس مزمن و اضطراب"},
+  {id:6,label:"خواب و ریتم شبانه‌روزی"},
+  {id:7,label:"سبک زندگی محافظ مغز"},
+];
+
+const questions = [
+  // SEC 1 — Risk factors
+  {id:1,sec:1,type:'option',text:'آیا یکی از والدین یا خواهر/برادر درجه اول شما به آلزایمر یا زوال عقل مبتلا بوده‌اند؟',options:['خیر، هیچکدام','یک نفر','دو نفر یا بیشتر','نمی‌دانم'],scores:[0,2,4,1],hint:'سابقه خانوادگی درجه اول خطر ابتلا را ۲ تا ۴ برابر افزایش می‌دهد.'},
+  {id:2,sec:1,type:'option',text:'آیا به دیابت نوع ۲ مبتلا هستید؟',options:['خیر','بله، کنترل‌شده','بله، کنترل نشده'],scores:[0,1,3],hint:'دیابت کنترل‌نشده خطر زوال شناختی را تا ۶۰٪ افزایش می‌دهد.'},
+  {id:3,sec:1,type:'option',text:'وضعیت فشار خون شما چگونه است؟',options:['طبیعی','پرفشاری خفیف (کنترل‌شده)','پرفشاری بدون درمان','کم‌فشاری'],scores:[0,1,3,1],hint:'پرفشاری خون درمان‌نشده در میانسالی با آلزایمر ارتباط مستقیم دارد.'},
+  {id:4,sec:1,type:'option',text:'آیا سابقه آسیب به سر (ضربه مغزی) داشته‌اید؟',options:['خیر','یک بار، خفیف','چند بار یا شدید'],scores:[0,1,3]},
+  {id:5,sec:1,type:'option',text:'آیا سیگار می‌کشید یا در گذشته کشیده‌اید؟',options:['هرگز','قبلاً بله، الان نه','بله، کمتر از ۱۰ سیگار/روز','بله، بیشتر از ۱۰ سیگار/روز'],scores:[0,1,2,3]},
+  {id:6,sec:1,type:'option',text:'شاخص توده بدنی (BMI) شما تقریباً چقدر است؟',options:['طبیعی (۱۸.۵ تا ۲۴.۹)','اضافه وزن (۲۵ تا ۲۹.۹)','چاقی (۳۰ یا بیشتر)','نمی‌دانم'],scores:[0,1,3,1],hint:'چاقی در میانسالی با افزایش خطر زوال شناختی مرتبط است.'},
+
+  // SEC 2 — Episodic memory
+  {id:7,sec:2,type:'scale',text:'چقدر اتفاق می‌افتد که نام افراد آشنا (دوستان، همکاران) را فراموش کنید؟',scaleMin:'هرگز',scaleMax:'خیلی زیاد'},
+  {id:8,sec:2,type:'scale',text:'چقدر محل قرار دادن وسایل روزانه (کلید، عینک، گوشی) را فراموش می‌کنید؟',scaleMin:'هرگز',scaleMax:'خیلی زیاد'},
+  {id:9,sec:2,type:'option',text:'آیا تاریخ، روز هفته یا ماه را گاهی فراموش می‌کنید؟',options:['هرگز','به ندرت (ماهی یک بار)','گاهی (هفته‌ای یک بار)','اغلب (روزانه)'],scores:[0,1,2,3]},
+  {id:10,sec:2,type:'option',text:'آیا برای قرارهای مهم (پزشک، جلسات) به یادآور نیاز دارید؟',options:['نه، همه را به خاطر دارم','گاهی یادآور می‌گذارم','اغلب به یادآور وابسته‌ام','همیشه فراموش می‌کنم بدون یادآور'],scores:[0,1,2,3]},
+  {id:11,sec:2,type:'scale',text:'آیا گاهی داستان یا رویداد یکسانی را چندین بار برای یک نفر تعریف می‌کنید بدون اینکه متوجه شوید؟',scaleMin:'هرگز',scaleMax:'خیلی زیاد'},
+  {id:12,sec:2,type:'option',text:'وقتی کتاب یا مقاله می‌خوانید، بعد از چند صفحه محتوا را به یاد می‌آورید؟',options:['بله، به‌خوبی','بیشتر مطالب را','فقط کلیات را','تقریباً چیزی به یادم نمی‌ماند'],scores:[0,1,2,3]},
+
+  // SEC 3 — Working memory & language
+  {id:13,sec:3,type:'option',text:'آیا در حین صحبت، کلمه‌ای که دنبالش هستید "سر زبانتان" می‌ماند اما نمی‌توانید بگویید؟',options:['هرگز','گاهی (ماهی چند بار)','اغلب (هفته‌ای)','تقریباً هر روز'],scores:[0,1,2,3],hint:'این پدیده به «نوک زبان» معروف است و در مراحل اولیه اختلال شناختی شایع است.'},
+  {id:14,sec:3,type:'scale',text:'وقتی کسی آدرس یا شماره تلفنی به شما می‌گوید، آیا می‌توانید آن را چند ثانیه در ذهن نگه دارید؟',scaleMin:'خیلی سخت',scaleMax:'خیلی آسان',reversed:true},
+  {id:15,sec:3,type:'option',text:'آیا می‌توانید یک داستان ساده را که دیروز شنیده‌اید برای دیگران تعریف کنید؟',options:['بله، با جزئیات','بله، کلیات را','فقط چند نکته کلی','نه، نمی‌توانم'],scores:[0,1,2,3]},
+  {id:16,sec:3,type:'scale',text:'چقدر در پیدا کردن کلمه مناسب برای بیان منظورتان مشکل دارید؟',scaleMin:'هرگز',scaleMax:'خیلی زیاد'},
+  {id:17,sec:3,type:'option',text:'اگر کسی دستوری شامل ۳ مرحله به شما بدهد (مثلاً: برو آشپزخانه، لیوان بیاور، آب بریز)، چقدر راحت انجام می‌دهید؟',options:['بدون هیچ مشکلی','گاهی یک مرحله را جا می‌اندازم','اغلب نیاز به تکرار دارم','خیلی برایم سخت است'],scores:[0,1,2,3]},
+  {id:18,sec:3,type:'scale',text:'آیا محاسبات ذهنی ساده (مثلاً جمع و تفریق قیمت‌ها) برایتان سخت‌تر از قبل شده؟',scaleMin:'نه، مثل قبل',scaleMax:'بله، خیلی سخت‌تر'},
+
+  // SEC 4 — Attention & executive function
+  {id:19,sec:4,type:'scale',text:'چقدر می‌توانید بدون حواس‌پرتی روی یک کار برای ۳۰ دقیقه تمرکز کنید؟',scaleMin:'خیلی سخت',scaleMax:'خیلی آسان',reversed:true},
+  {id:20,sec:4,type:'option',text:'آیا گاهی وسط انجام یک کار فراموش می‌کنید که دنبال چه چیزی بودید؟',options:['هرگز','به ندرت','گاهی','اغلب'],scores:[0,1,2,3]},
+  {id:21,sec:4,type:'scale',text:'چقدر در جلسات یا مکالمات، ذهنتان پرت می‌شود؟',scaleMin:'هرگز',scaleMax:'خیلی زیاد'},
+  {id:22,sec:4,type:'option',text:'آیا رانندگی در مسیرهای آشنا برایتان گاهی گیج‌کننده شده؟',options:['نه، هرگز','به ندرت','گاهی','اغلب یا دیگر رانندگی نمی‌کنم'],scores:[0,1,2,3],hint:'تغییر در توانایی مسیریابی یکی از علائم اولیه اختلال شناختی است.'},
+  {id:23,sec:4,type:'option',text:'وقتی چند کار همزمان دارید (multitasking)، چه احساسی دارید؟',options:['راحت مدیریت می‌کنم','کمی سردرگم می‌شوم','خیلی سردرگم می‌شوم','اصلاً نمی‌توانم'],scores:[0,1,2,3]},
+  {id:24,sec:4,type:'scale',text:'چقدر در تصمیم‌گیری برای کارهای روزمره دچار تردید یا تأخیر می‌شوید؟',scaleMin:'هرگز',scaleMax:'همیشه'},
+
+  // SEC 5 — Stress & anxiety
+  {id:25,sec:5,type:'scale',text:'در ماه گذشته، چقدر احساس کرده‌اید که استرس بر زندگی‌تان تسلط دارد؟',scaleMin:'اصلاً',scaleMax:'کاملاً'},
+  {id:26,sec:5,type:'scale',text:'چقدر احساس کرده‌اید که نمی‌توانید مشکلات شخصی‌تان را کنترل کنید؟',scaleMin:'هرگز',scaleMax:'اغلب'},
+  {id:27,sec:5,type:'option',text:'آیا نگرانی‌های مداوم (شغل، مالی، خانواده) دارید که ذهنتان را درگیر می‌کند؟',options:['خیر، نگرانی قابل مدیریت دارم','گاهی نگران‌کننده است','اغلب ذهنم درگیر است','تقریباً همیشه نگران هستم'],scores:[0,1,2,3]},
+  {id:28,sec:5,type:'scale',text:'چقدر احساس اضطراب یا تنش جسمی (گرفتگی عضلات، ضربان قلب) دارید؟',scaleMin:'هرگز',scaleMax:'خیلی زیاد'},
+  {id:29,sec:5,type:'option',text:'آیا در دوره‌هایی احساس بی‌حوصلگی، غم یا از دست دادن علاقه به فعالیت‌ها داشته‌اید؟',options:['خیر','گاهی، خفیف','اغلب، متوسط','بله، شدید و مداوم'],scores:[0,1,2,3],hint:'افسردگی و استرس مزمن می‌توانند شناخت را به‌طور قابل توجهی تحت تأثیر قرار دهند.'},
+  {id:30,sec:5,type:'scale',text:'آیا رویدادهای استرس‌زای مهم (طلاق، از دست دادن شغل، فوت عزیز) در ۲ سال گذشته تجربه کرده‌اید؟',scaleMin:'خیر',scaleMax:'چند مورد شدید'},
+
+  // SEC 6 — Sleep
+  {id:31,sec:6,type:'option',text:'معمولاً چند ساعت در شب می‌خوابید؟',options:['کمتر از ۵ ساعت','۵ تا ۶ ساعت','۷ تا ۸ ساعت','بیشتر از ۹ ساعت'],scores:[3,2,0,1],hint:'کمتر از ۶ ساعت خواب پیوسته با تجمع پروتئین آمیلوئید (مرتبط با آلزایمر) ارتباط دارد.'},
+  {id:32,sec:6,type:'option',text:'کیفیت خواب شما چگونه است؟',options:['عالی — عمیق و کافی','خوب — گاهی مشکل دارم','متوسط — اغلب بیدار می‌شوم','بد — خواب ناکافی و سطحی'],scores:[0,1,2,3]},
+  {id:33,sec:6,type:'option',text:'آیا خروپف می‌کنید یا کسی گفته که گاهی نفس کشیدن شما قطع می‌شود؟',options:['خیر','خروپف خفیف','خروپف شدید','بله، آپنه تشخیص داده شده'],scores:[0,1,2,3],hint:'آپنه خواب با کاهش اکسیژن‌رسانی به مغز و افزایش خطر زوال شناختی مرتبط است.'},
+  {id:34,sec:6,type:'scale',text:'چقدر طول می‌کشد تا بخوابید (تأخیر خواب)؟',scaleMin:'کمتر از ۱۵ دقیقه',scaleMax:'بیشتر از ۱ ساعت'},
+  {id:35,sec:6,type:'scale',text:'آیا اضطراب یا افکار مزاحم مانع خوابتان می‌شود؟',scaleMin:'هرگز',scaleMax:'هر شب'},
+
+  // SEC 7 — Lifestyle
+  {id:36,sec:7,type:'option',text:'چند بار در هفته فعالیت هوازی (پیاده‌روی سریع، دویدن، شنا) دارید؟',options:['هرگز','۱ تا ۲ بار، کمتر از ۳۰ دقیقه','۳ تا ۴ بار، ۳۰ دقیقه یا بیشتر','۵ بار یا بیشتر'],scores:[3,2,1,0],hint:'ورزش هوازی منظم BDNF (فاکتور رشد مغز) را افزایش می‌دهد و از نورون‌ها محافظت می‌کند.'},
+  {id:37,sec:7,type:'option',text:'رژیم غذایی معمول شما بیشتر شامل چه مواردی است؟',options:['فست‌فود و غذاهای فرآوری‌شده','گوشت قرمز زیاد، سبزی کم','مخلوطی متعادل','سبزی، میوه، ماهی، روغن زیتون (رژیم مدیترانه‌ای)'],scores:[3,2,1,0],hint:'رژیم MIND (ترکیب مدیترانه‌ای و DASH) خطر آلزایمر را تا ۵۳٪ کاهش می‌دهد.'},
+  {id:38,sec:7,type:'option',text:'چقدر در فعالیت‌های ذهنی (مطالعه، یادگیری زبان، نواختن ساز، پازل) شرکت می‌کنید؟',options:['هر روز، فعال','چند بار در هفته','به ندرت','تقریباً هرگز'],scores:[0,1,2,3],hint:'ذخیره شناختی قوی مغز را در برابر آلزایمر مقاوم‌تر می‌کند.'},
+  {id:39,sec:7,type:'option',text:'روابط اجتماعی و تعاملات شما با دیگران چگونه است؟',options:['خیلی فعال، روزانه تعامل دارم','نسبتاً فعال','محدود، عمدتاً خانواده نزدیک','منزوی هستم، کم تعامل دارم'],scores:[0,1,2,3],hint:'انزوای اجتماعی خطر زوال شناختی را تا ۶۰٪ افزایش می‌دهد.'},
+  {id:40,sec:7,type:'option',text:'آیا از الکل استفاده می‌کنید؟',options:['خیر','گاهی (ماهانه)','هفتگی، مقدار کم','روزانه یا مقدار زیاد'],scores:[0,0,1,3]},
+];
+
+let current=0, answers={};
+let patientInfo={};
+
+function startQuiz(){
+  patientInfo={
+    name: document.getElementById('pt-name').value||'ناشناس',
+    age: document.getElementById('pt-age').value||'نامشخص',
+    gender: document.getElementById('pt-gender').value||'نامشخص',
+    edu: document.getElementById('pt-edu').value||'نامشخص',
+    date: new Date().toLocaleDateString('fa-IR')
+  };
+  document.getElementById('welcome-screen').style.display='none';
+  document.getElementById('quiz-screen').style.display='block';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q=questions[current];
+  const sec=sections.find(s=>s.id===q.sec);
+  document.getElementById('section-tag-display').textContent=`بخش ${toP(q.sec)}: ${sec.label}`;
+  const pct=((current)/questions.length*100).toFixed(0);
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('q-counter').textContent=`سوال ${toP(current+1)} از ${toP(questions.length)}`;
+  document.getElementById('section-label').textContent=`بخش ${toP(q.sec)}: ${sec.label}`;
+
+  let html=`<div class="question-block">
+    <div class="q-number">سوال ${toP(current+1)} — ${sec.label}</div>
+    <div class="q-text">${q.text}</div>`;
+  if(q.hint) html+=`<div class="q-hint">💡 ${q.hint}</div>`;
+
+  if(q.type==='option'){
+    html+=`<div class="options">`;
+    q.options.forEach((opt,i)=>{
+      const sel=answers[q.id]===i?'selected':'';
+      html+=`<div class="option ${sel}" onclick="selectOption(${q.id},${i})"><div class="option-dot"></div>${opt}</div>`;
+    });
+    html+=`</div>`;
+  } else if(q.type==='scale'){
+    html+=`<div class="scale-wrap"><div class="scale-labels"><span>${q.scaleMin}</span><span>${q.scaleMax}</span></div><div class="scale-btns">`;
+    for(let v=1;v<=5;v++){
+      const sel=answers[q.id]===v?'selected':'';
+      html+=`<button class="scale-btn ${sel}" onclick="selectScale(${q.id},${v})">${toP(v)}</button>`;
+    }
+    html+=`</div></div>`;
+  }
+  html+=`</div>`;
+  document.getElementById('questions-container').innerHTML=html;
+  document.getElementById('btn-prev').disabled=(current===0);
+  document.getElementById('btn-next').textContent=current===questions.length-1?'مشاهده گزارش':'بعدی';
+}
+
+function selectOption(qid,idx){answers[qid]=idx;renderQuestion();}
+function selectScale(qid,val){answers[qid]=val;renderQuestion();}
+function hasAnswer(){const q=questions[current];return answers[q.id]!==undefined;}
+function nextQ(){if(!hasAnswer()){alert('لطفاً یک گزینه انتخاب کنید.');return;}if(current<questions.length-1){current++;renderQuestion();}else showResult();}
+function prevQ(){if(current>0){current--;renderQuestion();}}
+
+function getQScore(q){
+  const ans=answers[q.id];
+  if(ans===undefined) return 0;
+  if(q.type==='option') return q.scores[ans]||0;
+  if(q.type==='scale'){return q.reversed?(6-ans)-1:ans-1;}
+  return 0;
+}
+function getQMax(q){
+  if(q.type==='option') return Math.max(...q.scores);
+  if(q.type==='scale') return 4;
+  return 0;
+}
+
+function showResult(){
+  document.getElementById('quiz-screen').style.display='none';
+  document.getElementById('result-screen').style.display='block';
+  document.getElementById('result-patient-info').textContent=
+    `${patientInfo.name} | سن: ${patientInfo.age} | ${patientInfo.gender} | تحصیلات: ${patientInfo.edu} | تاریخ: ${patientInfo.date}`;
+
+  const domains=[
+    {label:'عوامل خطر پایه',qs:[1,2,3,4,5,6],icon:'⚠️'},
+    {label:'حافظه اپیزودیک',qs:[7,8,9,10,11,12],icon:'🧩'},
+    {label:'حافظه کاری و زبان',qs:[13,14,15,16,17,18],icon:'💬'},
+    {label:'توجه و عملکرد اجرایی',qs:[19,20,21,22,23,24],icon:'🎯'},
+    {label:'استرس و اضطراب',qs:[25,26,27,28,29,30],icon:'😰'},
+    {label:'کیفیت خواب',qs:[31,32,33,34,35],icon:'😴'},
+    {label:'سبک زندگی محافظ',qs:[36,37,38,39,40],icon:'🏃'},
+  ];
+
+  let totalRaw=0,totalMax=0;
+  const dRes=[];
+  domains.forEach(d=>{
+    let sc=0,mx=0;
+    d.qs.forEach(qid=>{
+      const q=questions.find(x=>x.id===qid);
+      if(!q)return;
+      sc+=getQScore(q); mx+=getQMax(q);
+    });
+    const riskPct=mx>0?Math.round(sc/mx*100):0;
+    dRes.push({label:d.label,icon:d.icon,riskPct});
+    totalRaw+=sc; totalMax+=mx;
+  });
+
+  const totalRiskPct=Math.round(totalRaw/totalMax*100);
+  const displayScore=100-totalRiskPct;
+
+  const circle=document.getElementById('score-circle');
+  document.getElementById('score-num').textContent=toP(displayScore);
+  let level,title,desc;
+  if(displayScore>=70){level='low';title='وضعیت شناختی مطلوب';desc='عملکرد شناختی شما در اکثر حوزه‌ها در محدوده طبیعی قرار دارد. ادامه سبک زندگی سالم و ارزیابی دوره‌ای سالانه توصیه می‌شود.';}
+  else if(displayScore>=45){level='medium';title='نیاز به توجه و پیگیری';desc='برخی شاخص‌ها نشان‌دهنده عوامل خطر یا تغییرات قابل توجه در عملکرد شناختی است. مشاوره با متخصص در ۱ تا ۳ ماه آینده توصیه می‌شود.';}
+  else{level='high';title='توصیه اکید به ارزیابی تخصصی';desc='نتایج نشان‌دهنده چند عامل خطر و تغییر در عملکرد شناختی است. ارزیابی جامع توسط روانشناس یا نورولوژیست در اسرع وقت ضروری است.';}
+  circle.className=`score-circle level-${level}`;
+  document.getElementById('result-title').textContent=title;
+  document.getElementById('result-desc').textContent=desc;
+
+  // Domain bars
+  let barsHtml='';
+  dRes.forEach(dr=>{
+    const s=100-dr.riskPct;
+    const fc=s>=70?'fill-good':s>=45?'fill-warn':'fill-danger';
+    const badge=s>=70?'badge-low':s>=45?'badge-med':'badge-high';
+    const badgeText=s>=70?'مطلوب':s>=45?'متوسط':'نیاز به توجه';
+    barsHtml+=`<div class="domain-bar">
+      <div class="domain-name">
+        <span>${dr.icon} ${dr.label}</span>
+        <span><span class="badge ${badge}">${badgeText}</span> ${toP(s)}٪</span>
+      </div>
+      <div class="domain-track"><div class="domain-fill ${fc}" style="width:${s}%"></div></div>
+    </div>`;
+  });
+  document.getElementById('domain-bars').innerHTML=barsHtml;
+
+  // Answers summary table
+  let tableHtml=`<table class="summary-table"><thead><tr><th>سوال</th><th>پاسخ</th><th>امتیاز خطر</th></tr></thead><tbody>`;
+  questions.forEach(q=>{
+    const ans=answers[q.id];
+    let ansText='بدون پاسخ';
+    if(ans!==undefined){
+      if(q.type==='option') ansText=q.options[ans];
+      else if(q.type==='scale') ansText=`${toP(ans)} از ۵`;
+    }
+    const sc=getQScore(q);
+    const mx=getQMax(q);
+    const risk=mx>0?Math.round(sc/mx*100):0;
+    const badge=risk<33?'badge-low':risk<66?'badge-med':'badge-high';
+    tableHtml+=`<tr><td>${q.text.substring(0,50)}${q.text.length>50?'...':''}</td><td>${ansText}</td><td><span class="badge ${badge}">${toP(sc)}/${toP(mx)}</span></td></tr>`;
+  });
+  tableHtml+=`</tbody></table>`;
+  document.getElementById('answers-summary').innerHTML=tableHtml;
+
+  // Recommendations
+  const recs=[];
+  if(displayScore<70) recs.push({icon:'🧑‍⚕️',text:'مراجعه به روانشناس یا متخصص نورولوژی برای ارزیابی دقیق‌تر با تست‌های MoCA و MMSE توصیه می‌شود.'});
+  if(answers[31]!==undefined&&answers[31]<=1) recs.push({icon:'😴',text:'خواب شبانه را به ۷ تا ۸ ساعت افزایش دهید. تجمع پروتئین آمیلوئید در مغز عمدتاً در خواب عمیق پاکسازی می‌شود.'});
+  if(answers[36]!==undefined&&answers[36]>=2) recs.push({icon:'🏃',text:'ورزش هوازی منظم (حداقل ۱۵۰ دقیقه در هفته) را شروع کنید. BDNF تولید‌شده توسط ورزش از نورون‌های مغز محافظت می‌کند.'});
+  if(answers[25]!==undefined&&answers[25]>=3) recs.push({icon:'🧘',text:'استرس مزمن کورتیزول را بالا نگه می‌دارد که مستقیماً به هیپوکامپ آسیب می‌زند. تکنیک‌های MBSR یا CBT را امتحان کنید.'});
+  if(answers[39]!==undefined&&answers[39]>=2) recs.push({icon:'👥',text:'ارتباطات اجتماعی را فعالانه تقویت کنید. گروه‌های اجتماعی، کلاس‌های گروهی یا فعالیت‌های داوطلبانه را در نظر بگیرید.'});
+  if(answers[37]!==undefined&&answers[37]<=1) recs.push({icon:'🥗',text:'رژیم MIND را امتحان کنید: سبزیجات برگ‌دار، توت‌ها، آجیل، ماهی، روغن زیتون و کاهش گوشت قرمز و شکر.'});
+  if(answers[33]!==undefined&&answers[33]>=2) recs.push({icon:'🌙',text:'برای بررسی آپنه خواب به متخصص خواب مراجعه کنید. این اختلال درمان‌پذیر است و تأثیر زیادی بر سلامت مغز دارد.'});
+  if(recs.length===0) recs.push({icon:'✅',text:'وضعیت کلی شما مطلوب است. ارزیابی سالانه و ادامه سبک زندگی سالم را حفظ کنید.'});
+  let recsHtml='';
+  recs.forEach(r=>{recsHtml+=`<li data-icon="${r.icon}">${r.text}</li>`;});
+  document.getElementById('recs-list').innerHTML=recsHtml;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function printReport(){window.print();}
+
+function copyReport(){
+  let text=`گزارش غربالگری شناختی\n`;
+  text+=`بیمار: ${patientInfo.name} | سن: ${patientInfo.age} | تاریخ: ${patientInfo.date}\n\n`;
+  questions.forEach(q=>{
+    const ans=answers[q.id];
+    let ansText='بدون پاسخ';
+    if(ans!==undefined){
+      if(q.type==='option') ansText=q.options[ans];
+      else if(q.type==='scale') ansText=`${ans} از ۵`;
+    }
+    text+=`${q.id}. ${q.text}\nپاسخ: ${ansText}\n\n`;
+  });
+  navigator.clipboard.writeText(text).then(()=>alert('گزارش کپی شد! می‌توانید در واتساپ یا ایمیل پیست کنید.'));
+}
+
+function downloadCSV(){
+  let csv='\uFEFF'; // BOM for Excel Persian
+  csv+='شماره,سوال,پاسخ,امتیاز خطر,حداکثر\n';
+  questions.forEach(q=>{
+    const ans=answers[q.id];
+    let ansText='بدون پاسخ';
+    if(ans!==undefined){
+      if(q.type==='option') ansText=q.options[ans];
+      else if(q.type==='scale') ansText=`${ans} از ۵`;
+    }
+    const sc=getQScore(q);
+    const mx=getQMax(q);
+    csv+=`${q.id},"${q.text}","${ansText}",${sc},${mx}\n`;
+  });
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=`screening_${patientInfo.name}_${patientInfo.date}.csv`;
+  a.click();
+}
+
+function bookConsult(){alert('برای رزرو مشاوره با کلینیک تماس بگیرید.');}
+function toP(n){return String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);}
+</script>
+</body>
+</html>
